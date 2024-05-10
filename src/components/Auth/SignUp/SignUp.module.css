@@ -1,0 +1,47 @@
+.form{
+  flex-grow: 1;
+}
+
+.header {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
+
+.title {
+  font-size: 22px;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+}
+
+.divCenter {
+  display: flex;
+  justify-content: center;
+}
+
+.regInput {
+  width: 60%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.divBtn {
+  display: flex;
+  justify-content: center;
+}
+
+.regbtn {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.text {
+  color: var(--grey);
+}
+
