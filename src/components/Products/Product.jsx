@@ -5,6 +5,7 @@ import { useParams, Link } from "react-router-dom";
 import { db } from "../../firebase";
 import { ROUTES } from "../../utils/routes";
 import { doc, getDoc } from "firebase/firestore";
+import { useAuth } from "../../firebase";
 
 import CustomButton from "../Custom/CustomButton/CustomButton";
 
@@ -21,6 +22,7 @@ const Product = () => {
     const storedItems = localStorage.getItem("cartItems");
     return storedItems ? JSON.parse(storedItems) : [];
   });
+  const currentUser = useAuth();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -37,6 +39,10 @@ const Product = () => {
 
   const addToCart = (e) => {
     e.preventDefault();
+    if (!currentUser) {
+      alert("Пожалуйста, войдите в систему, чтобы добавить товар в корзину.");
+      return;
+    }
     if (!currentSize) {
       alert("Выберите размер товара!");
       return;
@@ -101,7 +107,7 @@ const Product = () => {
         </div>
       </section>
 
-      <Products title="Похожие товары" />
+      <Products title="Популярные товары" />
     </>
   );
 };
