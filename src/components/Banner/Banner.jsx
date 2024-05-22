@@ -10,15 +10,15 @@ const Banner = () => (
   <section className={styles.banner}>
     <div className={styles.left}>
       <p className={styles.content}>
-        SUMMER
-        <span>SALE</span>
+        ЛЕТНЯЯ
+        <span>СКИДКА</span>
       </p>
       <Link to='/category/Кольца'>
         <CustomButton
           width = "100%"
           height="40px"
           fontSize = "18px"
-          label="See more"
+          label="Подробнее"
         />
       </Link>
     </div>
@@ -28,7 +28,7 @@ const Banner = () => (
       style={{ backgroundImage: `url(${bannerImg})` }}
     >
       <p className={styles.discount}>
-        save up to <span>15%</span> off
+        экономия до <span>15%</span>
       </p>
     </div>
   </section>

@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 import LOGO from "../../../images/login.png";
 import styles from "./Login.module.css";
-import CustomInput from "../../Custom/CustomInput/CustomInput.jsx";
 
 
 const Login = () => {
@@ -31,7 +30,7 @@ const Login = () => {
   return (
     <form className={styles.form}>
       <div className={styles.header}>
-        <p className={styles.title}>Аторизация</p>
+        <p className={styles.title}>Авторизация</p>
         <img src={LOGO} alt="LOGO" className={styles.icon}/>
       </div>
       <div className={styles.bodyLogin}>

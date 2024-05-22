@@ -25,6 +25,10 @@ const Products = ({ title }) => {
     fetchPosts();
   }, []);
 
+  const formatPrice = (price) => {
+    return parseFloat(price).toFixed(2);
+  };
+
   const limitedPosts = posts.slice(0, 5);
 
   const shuffledPosts = limitedPosts.sort(() => Math.random() - 0.5);
@@ -43,11 +47,11 @@ const Products = ({ title }) => {
               <h3 className={styles.title}>{post.title}</h3>
               <div className={styles.info}>
               <div className={styles.prices}>
-                <div className={styles.price}>{post.price}$</div>
+                <div className={styles.price}>{formatPrice(post.price)} $</div>
               </div>
 
               <div className={styles.purchases}>
-                {Math.floor(Math.random() * 20 + 1)} purchased
+                {Math.floor(Math.random() * 20 + 1)} заказов
               </div>
             </div>
           </div>

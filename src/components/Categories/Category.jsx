@@ -16,6 +16,7 @@ import {
   doc,
   deleteDoc,
   getDocs,
+  orderBy,
 } from "firebase/firestore";
 
 import {
@@ -37,6 +38,7 @@ const Category = () => {
   const user = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [priceFilter, setPriceFilter] = useState("");
   const [editedProduct, setEditedProduct] = useState({
     id: null,
     title: "",
@@ -67,18 +69,50 @@ const Category = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       if (categoryName) {
-        const productsCollection = collection(db, "products");
-        const q = query(productsCollection, where("category", "==", categoryName));
-        const querySnapshot = await getDocs(q);
+        let productsCollection = collection(db, "products");
+    
+        if (priceFilter === "lowest") {
+          productsCollection = query(
+            productsCollection,
+            where("category", "==", categoryName),
+            orderBy("price", "asc")
+          );
+        } else if (priceFilter === "highest") {
+          productsCollection = query(
+            productsCollection,
+            where("category", "==", categoryName),
+            orderBy("price", "desc")
+          );
+        } else {
+          productsCollection = query(
+            productsCollection,
+            where("category", "==", categoryName)
+          );
+        }
+        
+        const querySnapshot = await getDocs(productsCollection);
         const productsData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        setProducts(productsData);
+    
+        // Локальная сортировка данных
+        const sortedProducts = productsData.sort((a, b) => {
+          if (priceFilter === "lowest") {
+            return a.price - b.price || a.id.localeCompare(b.id);
+          } else if (priceFilter === "highest") {
+            return b.price - a.price || a.id.localeCompare(b.id);
+          } else {
+            return a.id.localeCompare(b.id);
+          }
+        });
+    
+        setProducts(sortedProducts);
       }
     };
+    
     fetchProducts();
-  }, [categoryName]);
+  }, [categoryName, priceFilter]);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -105,10 +139,24 @@ const Category = () => {
     );
   };
 
+  const formatPrice = (price) => {
+    return parseFloat(price).toFixed(2);
+  };
+
+  const applyDiscountIfNeeded = (product) => {
+    if (product.category === "Колье" || product.category === "Кольца") {
+      const originalPrice = parseFloat(product.price);
+      const discountPrice = originalPrice * 0.85; // 15% discount
+      return { ...product, price: discountPrice.toFixed(2), originalPrice: originalPrice.toFixed(2) };
+    }
+    return { ...product, originalPrice: product.price }; // Store original price if no discount is applied
+  };
+
   const addProduct = async () => {
-    const docRef = await addDoc(collection(db, "products"), newProduct);
+    const productWithDiscount = applyDiscountIfNeeded(newProduct);
+    const docRef = await addDoc(collection(db, "products"), productWithDiscount);
     processTextToList(newProduct.description);
-    const addedProduct = { ...newProduct, id: docRef.id };
+    const addedProduct = { ...productWithDiscount, id: docRef.id };
     if (addedProduct.category === categoryName) {
       setProducts(prevProducts => [...prevProducts, addedProduct]);
     }
@@ -116,10 +164,11 @@ const Category = () => {
   };
 
   const saveProduct = async () => {
-    await updateDoc(doc(db, "products", editedProduct.id), editedProduct);
+    const productWithDiscount = applyDiscountIfNeeded(editedProduct);
+    await updateDoc(doc(db, "products", editedProduct.id), productWithDiscount);
     processTextToList(newProduct.description);
     const updatedPosts = products.map((product) =>
-      product.id === editedProduct.id ? editedProduct : product
+      product.id === editedProduct.id ? productWithDiscount : product
     );
     setProducts(updatedPosts);
     closeModal();
@@ -163,13 +212,25 @@ const Category = () => {
     const listItems = lines.map((line) => `<li>${line.trim()}</li>`);
     return `<ul>${listItems.join('')}</ul>`;
   };
-  
 
   return (
     <>
       <Poster />
       <section className={styles.wrapper}>
         <h2 className={styles.titleCategory}>{categoryName}</h2>
+        <div className={styles.filter}>
+          <p>Фильтр:</p>
+          <CustomSelect
+            options={[
+              { value: "", label: "Без фильтра" },
+              { value: "lowest", label: "От самой низкой цены" },
+              { value: "highest", label: "От самой высокой цены" }
+            ]}
+            placeholder="Выберите"
+            value={priceFilter}
+            handleChange={(e) => setPriceFilter(e.target.value)}
+          />
+        </div>
 
         {user && user.isAdmin && (
           <div className="adminButton">
@@ -299,11 +360,13 @@ const Category = () => {
                 <h3 className={styles.title}>{product.title}</h3>
                 <div className={styles.info}>
                   <div className={styles.prices}>
-                    <div className={styles.price}>{product.price} $</div>
+                    {product.originalPrice !== product.price && (
+                      <div className={styles.oldPrice}><del>{product.originalPrice}</del></div>
+                    )}
+                    <div className={styles.price}>{formatPrice(product.price)} $</div>
                   </div>
-
                   <div className={styles.purchases}>
-                    {Math.floor(Math.random() * 20 + 1)} purchased
+                    {Math.floor(Math.random() * 20 + 1)} заказов
                   </div>
                 </div>
               </div>

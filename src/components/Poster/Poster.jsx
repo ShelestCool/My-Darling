@@ -8,17 +8,17 @@ import CustomButton from "../Custom/CustomButton/CustomButton";
 
 const Poster = () => (
   <section className={styles.home}>
-    <div className={styles.title}>BIG SALE 15%</div>
+    <div className={styles.title}>Распродажа 15%</div>
     <div className={styles.product}>
       <div className={styles.text}>
-        <div className={styles.subtitle}>the bestseller of 2024</div>
-        <h1 className={styles.head}>All silver jewelry!</h1>
+        <div className={styles.subtitle}>БЕСТСЕЛЛЕР 2024 ГОДА</div>
+        <h1 className={styles.head}>На все виды колье!</h1>
         <Link to='/category/Колье'>
           <CustomButton
-          width = "30%"
+          width = "35%"
           height="40px"
           fontSize = "18px"
-          label="Shop Now"
+          label="Подробнее"
         />
         </Link>
       </div>

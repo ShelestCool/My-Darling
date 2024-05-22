@@ -1,77 +1,3 @@
-// import React, { useState } from "react";
-// import { Link } from "react-router-dom";
-
-// import styles from "./Header.module.css";
-
-// import LOGO from "../../images/header-logo.png";
-// import LOGOUT from "../../images/logout.png"
-// import { useAuth, logout } from "../../firebase";
-// import { ROUTES } from "../../utils/routes";
-
-// const Header = () => {
-//   const currentUser = useAuth();
-//   const [loading, setLoading] = useState(false);
-
-//   async function handleLogout() {
-//     setLoading(true);
-//     try {
-//       await logout();
-//     } catch {
-//       alert("Ошибка!");
-//     }
-//     setLoading(false);
-//   }
-
-//   return (
-//     <div className={styles.header}>
-//       <div className={styles.logo}>
-//         <Link to="/">
-//           <img src={LOGO} alt="LogoHeader" />
-//         </Link>
-//       </div>
-
-//       <div className={styles.info}>
-//         <form className={styles.form}>
-//           <input
-//             type="search"
-//             name="search"
-//             className={styles.inputSearch}
-//             placeholder="Search for anything..."
-//             autoComplete="off"
-//           />
-//         </form>
-//       </div>
-
-//       <div className={styles.account}>
-//           <Link to={ROUTES.CART}>
-//             <svg className={styles.icon}>
-//               <use xlinkHref={`${process.env.PUBLIC_URL}/sprite.svg#bag`} />
-//             </svg>
-//           </Link>
-//         </div>
-
-//       {currentUser ? (
-//             <div className={styles.logBlock}>
-//                 <p className={styles.logName}>{currentUser?.email} </p>
-//                 <img src={LOGOUT} alt="LogOut" className={styles.icon} disabled={loading || !currentUser}
-//                 onClick={handleLogout} />
-//             </div>
-//           ) : (
-//             <div className={styles.authNavButtons}>
-//               <Link as={Link} to="/login" className={styles.authNavButton}>
-//                 <button type="button" className="btn btn-outline-secondary">Log In</button>
-//               </Link>
-//               <Link as={Link} to="/signUp" className={styles.authNavButton}>
-//                 <button type="button" className="btn btn-outline-secondary">Sign Up</button>
-//               </Link>
-//             </div>
-//           )}
-//     </div>
-//   );
-// };
-
-// export default Header;
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { db } from "../../firebase"; 
@@ -139,7 +65,7 @@ const Header = () => {
             type="search"
             name="search"
             className={styles.inputSearch}
-            placeholder="Search for anything..."
+            placeholder="Поиск чего угодно..."
             autoComplete="off"
             value={searchQuery}
             onChange={handleSearchInput}
