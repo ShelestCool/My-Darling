@@ -40,7 +40,7 @@ const Login = () => {
             type="email"
             className={`${styles.loginInput} form-control`}
             id="exampleInputEmail1"
-            placeholder="Email"
+            placeholder="Почта"
             required
           />
         </div>
@@ -50,17 +50,17 @@ const Login = () => {
             className={`${styles.loginInput} form-control`}
             id="exampleInputPassword1"
             type="password"
-            placeholder="password"
+            placeholder="Пароль"
           />
         </div>
         <div className={styles.divCenter}>
           <button disabled={loading || currentUser} onClick={handleLogin} className={`${styles.loginbtn} btn btn-primary`}>
-            Log In
+            Вход
           </button>
         </div>
         <div className={styles.divCenter}>
           <p align="center">
-            У вас нет аккаунта? <Link to="/signUp" className={styles.text}>Sing Up</Link>
+            У вас нет аккаунта? <Link to="/signUp" className={styles.text}>Регистрация</Link>
           </p>
         </div>
       </div>

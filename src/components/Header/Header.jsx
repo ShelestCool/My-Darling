@@ -65,7 +65,7 @@ const Header = () => {
             type="search"
             name="search"
             className={styles.inputSearch}
-            placeholder="Поиск чего угодно..."
+            placeholder="Поиск ..."
             autoComplete="off"
             value={searchQuery}
             onChange={handleSearchInput}
@@ -106,7 +106,9 @@ const Header = () => {
 
       {currentUser ? (
         <div className={styles.logBlock}>
-          <p className={styles.logName}>{currentUser?.email} </p>
+          <Link as={Link} to="/account" className={styles.linkblack}>
+            <span className={styles.logName}>{currentUser?.email} </span>
+          </Link>
           <img
             src={LOGOUT}
             alt="LogOut"
@@ -119,12 +121,12 @@ const Header = () => {
         <div className={styles.authNavButtons}>
           <Link as={Link} to="/login" className={styles.authNavButton}>
             <button type="button" className="btn btn-outline-secondary">
-              Log In
+              Вход
             </button>
           </Link>
           <Link as={Link} to="/signUp" className={styles.authNavButton}>
             <button type="button" className="btn btn-outline-secondary">
-              Sign Up
+              Регистрация
             </button>
           </Link>
         </div>

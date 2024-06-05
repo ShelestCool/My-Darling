@@ -1,0 +1,40 @@
+.certificate li {
+  padding-bottom: 15px;
+  font-style: italic;
+  font-size: 15px;
+}
+
+.certificate p {
+  padding-top: 10px;
+  font-size: 15px;
+}
+
+.aboutProg {
+  display: flex;
+  justify-content: flex-end; 
+}
+
+.aboutProg2 {
+  padding-bottom: 20px;
+}
+
+.aboutProg2 p {
+  font-size: 15px;
+}
+
+.cart {
+  width: calc(100% - 324px);
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart p {
+  font-size: ;
+}
+
+.title {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 50px;
+}

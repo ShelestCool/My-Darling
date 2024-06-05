@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { useEffect, useState } from "react";
 
 const firebaseConfig = {
@@ -47,3 +47,5 @@ export function useAuth() {
 
   return currentUser;
 }
+
+export { sendPasswordResetEmail };

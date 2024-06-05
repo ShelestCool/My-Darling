@@ -75,6 +75,10 @@
   align-items: center;
 }
 
+.linkblack {
+  color: black;
+}
+
 .authNavButton {
   margin-left: 10px;
 }

@@ -3,10 +3,10 @@ import { useAuth } from "../../firebase";
 import { Navigate } from "react-router-dom";
 import { collection, getDocs, updateDoc, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../firebase";
-
 import styles from "./Cart.module.css";
 import CustomButton from "../Custom/CustomButton/CustomButton";
 import PaymentModal from "./PaymentModal/PaymentModal";
+import { addDoc } from "firebase/firestore";
 
 const Cart = () => {
   const currentUser = useAuth();
@@ -60,11 +60,21 @@ const Cart = () => {
 
   const handlePaymentSubmit = async () => {
     setIsModalOpen(false);
-    await Promise.all(cartItems.map((item) => deleteDoc(doc(db, "carts", currentUser.uid, "items", item.docId))));
-    setCartItems([]);
-    const itemNames = cartItems.map(item => item.title).join(", ");
-    alert(`Спасибо за покупку! Вы приобрели: ${itemNames}`);
-    setPurchaseCompleted(true);
+    const orderData = {
+      orderDate: new Date().toISOString(),
+      items: cartItems,
+      deliveryDate: "Срок доставки",
+    };
+    try {
+      await addDoc(collection(db, 'orders'), orderData);
+      await Promise.all(cartItems.map((item) => deleteDoc(doc(db, "carts", currentUser.uid, "items", item.docId))));
+      setCartItems([]);
+      const itemNames = cartItems.map(item => item.title).join(", ");
+      alert(`Спасибо за покупку! Вы приобрели: ${itemNames}`);
+      setPurchaseCompleted(true);
+    } catch (error) {
+      console.error("Ошибка при оформлении заказа:", error.message);
+    }
   };
 
   if (purchaseCompleted) {
@@ -123,12 +133,12 @@ const Cart = () => {
             </div>
           </div>
         </>
-      )}
-      {isModalOpen && <PaymentModal onClose={() => setIsModalOpen(false)} onSubmit={handlePaymentSubmit} cartItems={cartItems} />}
-    </section>
-  ) : (
-    <Navigate to="/login" />
-  );
-};
-
+        )}
+        {isModalOpen && <PaymentModal onClose={() => setIsModalOpen(false)} onSubmit={handlePaymentSubmit} cartItems={cartItems} />}
+      </section>
+    ) : (
+      <Navigate to="/login" />
+    );
+  };
+  
 export default Cart;

@@ -9,6 +9,8 @@ import Login from "../components/Auth/Login/Login";
 import Cart from "../components/Cart/Cart";
 import Product from "../components/Products/Product";
 import Category from "../components/Categories/Category";
+import Certificate from "../components/Certificate/Certificate";
+import Account from "../components/Account/Account";
 
 const AppRoutes = () => (
   <Routes>
@@ -18,6 +20,8 @@ const AppRoutes = () => (
     <Route path={ROUTES.SIGNUP} element={<SignUp />} />
     <Route path={ROUTES.LOGIN} element={<Login />} />
     <Route path={ROUTES.CART} element={<Cart />} />
+    <Route path={ROUTES.CERTIFICATE} element={<Certificate />} />
+    <Route path={ROUTES.ACCOUNT} element={<Account />} />
   </Routes>
 );
 

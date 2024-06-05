@@ -39,7 +39,7 @@ const SignUp = () => {
             type="email"
             className={`${styles.regInput} form-control`}
             id="exampleInputEmail1"
-            placeholder="Email"
+            placeholder="Почта"
             required
           />
         </div>
@@ -49,17 +49,17 @@ const SignUp = () => {
             className={`${styles.regInput} form-control`}
             id="exampleInputPassword1"
             type="password"
-            placeholder="password"
+            placeholder="Пароль"
           />
         </div>
         <div className={styles.divCenter}>
           <button disabled={loading || currentUser} onClick={handleSignup} className={`${styles.regbtn} btn btn-primary`}>
-            Sing Up
+            Регистрация
           </button>
         </div>
         <div className={styles.divCenter}>
           <p align="center">
-            У вас нет аккаунта? <Link to="/Login" className={styles.text}>Log In</Link>
+            У вас нет аккаунта? <Link to="/Login" className={styles.text}>Вход</Link>
           </p>
         </div>
       </div>

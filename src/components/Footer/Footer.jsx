@@ -10,10 +10,9 @@ import LOGO from "../../images/footer-logo.png";
 const Footer = () => (
   <section className={styles.footer}>
     <div className={styles.rights}>
-      Разработано{" "}
-      <a href="https://discord.gg/f27ae6et" target="_blank" rel="noreferrer">
-        TRASH GANG
-      </a>
+      <Link to={ROUTES.CERTIFICATE}>
+        <p>Справка</p>
+      </Link>
     </div>
 
     <div className={styles.logo}>

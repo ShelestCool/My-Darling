@@ -233,7 +233,7 @@ const Category = () => {
         </div>
 
         {user && user.isAdmin && (
-          <div className="adminButton">
+          <div className={styles.adminButton}>
             <CustomButton
               width = "110px"
               height="35px"
