@@ -3,6 +3,7 @@
   padding: 24px 32px;
   display: flex;
   flex-direction: column;
+  font-size: 15px;
 }
 
 .title1 {

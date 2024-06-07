@@ -36,6 +36,7 @@ const Account = () => {
     const querySnapshot = await getDocs(orderHistoryRef);
     const orders = querySnapshot.docs.map(doc => {
       const data = doc.data();
+      if (data.userId !== userId) return null; // Фильтрация по userId
       if (!data.deliveryDate) {
         let newDeliveryDate = new Date();
         newDeliveryDate.setDate(newDeliveryDate.getDate() + 3);
@@ -44,7 +45,7 @@ const Account = () => {
         data.deliveryDate = (data.deliveryDate.toDate ? data.deliveryDate.toDate() : new Date(data.deliveryDate));
       }
       return { id: doc.id, ...data };
-    });
+    }).filter(order => order !== null); // Исключение null значений
     setOrderHistory(orders);
   };
 
@@ -102,6 +103,11 @@ const Account = () => {
     return `${day}.${month}.${year}`;
   };
 
+  const isPastDeliveryDate = (deliveryDate) => {
+    const today = new Date();
+    return deliveryDate < today;
+  };
+
   return (
     <section className={styles.account}>
       <p className={styles.title1}>Личный Кабинет</p>
@@ -118,7 +124,7 @@ const Account = () => {
           Сбросить пароль
         </Button>
       </div>
-
+  
       <div>
         <p className={styles.title2}>История заказов:</p>
         <div className={styles.history}>
@@ -151,9 +157,10 @@ const Account = () => {
                         selected={selectedDate}
                         onChange={handleDateChange}
                         dateFormat="dd.MM.yyyy"
+                        minDate={new Date()} // Запрет выбора даты, которая уже прошла
                       />
                     ) : (
-                      formatDate(order.deliveryDate)
+                      formatDate(order.deliveryDate) || 'Дата не указана'
                     )}
                   </td>
                   <td>
@@ -169,27 +176,36 @@ const Account = () => {
                     )}
                   </td>
                   <td>
-                  {editOrderId === order.id ? (
-                      <CustomButton 
-                        width = "100%"
-                        height="40px"
-                        fontSize = "14px"
-                        label="Сохранить"
-                     handleClick={saveChanges}/>
+                    {isPastDeliveryDate(new Date(order.deliveryDate)) ? (
+                      <span>Заказ отправлен</span>
                     ) : (
                       <>
-                        <CustomButton 
-                          width = "100%"
-                          height="40px"
-                          fontSize = "14px"
-                          label="Изменить дату и адрес"
-                          handleClick={() => handleCalendarClick(order.id, order.address || '')}/>
-                        <CustomButton 
-                          width = "100%"
-                          height="40px"
-                          fontSize = "14px"
-                          label="Отменить заказ"
-                          handleClick={() => cancelOrder(order.id)}/>
+                        {editOrderId === order.id ? (
+                          <CustomButton 
+                            width="100%"
+                            height="40px"
+                            fontSize="14px"
+                            label="Сохранить"
+                            handleClick={saveChanges}
+                          />
+                        ) : (
+                          <>
+                            <CustomButton 
+                              width="100%"
+                              height="40px"
+                              fontSize="14px"
+                              label="Изменить дату и адрес"
+                              handleClick={() => handleCalendarClick(order.id, order.address || '')}
+                            />
+                            <CustomButton 
+                              width="100%"
+                              height="40px"
+                              fontSize="14px"
+                              label="Отменить заказ"
+                              handleClick={() => cancelOrder(order.id)}
+                            />
+                          </>
+                        )}
                       </>
                     )}
                   </td>
@@ -200,7 +216,7 @@ const Account = () => {
         </div>
       </div>
     </section>
-  );
+  );  
 };
 
 export default Account;

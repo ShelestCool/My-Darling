@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../firebase";
 import { Navigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { collection, getDocs, updateDoc, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import styles from "./Cart.module.css";
@@ -10,6 +11,7 @@ import { addDoc } from "firebase/firestore";
 
 const Cart = () => {
   const currentUser = useAuth();
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [purchaseCompleted, setPurchaseCompleted] = useState(false);
@@ -60,10 +62,12 @@ const Cart = () => {
 
   const handlePaymentSubmit = async () => {
     setIsModalOpen(false);
+    const currentDate = new Date();
     const orderData = {
-      orderDate: new Date().toISOString(),
+      userId: currentUser.uid,
+      orderDate: currentDate.toISOString(),
       items: cartItems,
-      deliveryDate: "Срок доставки",
+      deliveryDate: currentDate.toISOString(), // Устанавливаем текущую дату
     };
     try {
       await addDoc(collection(db, 'orders'), orderData);
@@ -72,6 +76,7 @@ const Cart = () => {
       const itemNames = cartItems.map(item => item.title).join(", ");
       alert(`Спасибо за покупку! Вы приобрели: ${itemNames}`);
       setPurchaseCompleted(true);
+      navigate('/account');
     } catch (error) {
       console.error("Ошибка при оформлении заказа:", error.message);
     }

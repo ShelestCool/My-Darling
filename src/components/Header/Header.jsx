@@ -7,11 +7,13 @@ import styles from "./Header.module.css";
 
 import LOGO from "../../images/header-logo.png";
 import LOGOUT from "../../images/logout.png";
+import { useNavigate } from 'react-router-dom';
 import { useAuth, logout } from "../../firebase";
 import { ROUTES } from "../../utils/routes";
 
 const Header = () => {
   const currentUser = useAuth();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -20,6 +22,7 @@ const Header = () => {
     setLoading(true);
     try {
       await logout();
+      navigate('/');
     } catch {
       alert("Ошибка!");
     }
