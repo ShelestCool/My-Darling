@@ -103,9 +103,13 @@ const Account = () => {
     return `${day}.${month}.${year}`;
   };
 
-  const isPastDeliveryDate = (deliveryDate) => {
+  const isPastNextDayDeliveryDate = (deliveryDate) => {
     const today = new Date();
-    return deliveryDate < today;
+    today.setHours(0, 0, 0, 0); // Установите время на полночь для сравнения только дат
+    const nextDay = new Date(deliveryDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+    nextDay.setHours(0, 0, 0, 0);
+    return today >= nextDay;
   };
 
   return (
@@ -176,7 +180,7 @@ const Account = () => {
                     )}
                   </td>
                   <td>
-                    {isPastDeliveryDate(new Date(order.deliveryDate)) ? (
+                    {isPastNextDayDeliveryDate(order.deliveryDate) ? (
                       <span>Заказ отправлен</span>
                     ) : (
                       <>
